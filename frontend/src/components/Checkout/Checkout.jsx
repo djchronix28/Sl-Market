@@ -60,7 +60,7 @@ const Checkout = () => {
     );
 
     // this is shipping cost variable
-    const shipping = subTotalPrice * 0.1; // 10%
+    const shipping = country === "SL" ? subTotalPrice * 0.1 : subTotalPrice * 0.3;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -283,25 +283,26 @@ const ShippingInfo = ({
             </h5>
             {userInfo && (
                 <div>
-                    {user &&
-                        user.addresses.map((item, index) => (
-                            <div className="w-full flex mt-1">
-                                <input
-                                    type="checkbox"
-                                    className="mr-3"
-                                    value={item.addressType}
-                                    onClick={() =>
-                                        setAddress1(item.address1) ||
-                                        setAddress2(item.address2) ||
-                                        setZipCode(item.zipCode) ||
-                                        setCountry(item.country) ||
-                                        setCity(item.city)
-                                    }
-                                />
-                                <h2>{item.addressType}</h2>
-                            </div>
-                        ))}
-                </div>
+                {user &&
+                  user.addresses.map((item, index) => (
+                    <div key={index} className="w-full flex mt-1">
+                      <input
+                        type="radio"
+                        name="address"
+                        className="mr-3"
+                        value={item.addressType}
+                        onChange={() => {
+                          setAddress1(item.address1);
+                          setAddress2(item.address2);
+                          setZipCode(item.zipCode);
+                          setCountry(item.country);
+                          setCity(item.city);
+                        }}
+                      />
+                      <h2>{item.addressType}</h2>
+                    </div>
+                  ))}
+              </div>
             )}
         </div>
     );
