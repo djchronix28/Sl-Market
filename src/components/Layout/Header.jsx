@@ -235,7 +235,7 @@ const Header = ({ activeHeading }) => {
             />
           </div>
           <div>
-            <Link to="/">
+            <Link to="/" className="w-full flex justify-center">
               <img
                 src="/SL_MARKET.png"
                 alt=""
