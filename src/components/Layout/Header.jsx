@@ -239,7 +239,7 @@ const Header = ({ activeHeading }) => {
               <img
                 src="/SL_MARKET.png"
                 alt=""
-                className="mt-3 cursor-pointer"
+                className="mt-3 cursor-pointer w-[150px] sm:w-[100px] xs:w-[80px] fixed top-0 left-0 z-20"  // Responsive sizes"
               />
             </Link>
           </div>
