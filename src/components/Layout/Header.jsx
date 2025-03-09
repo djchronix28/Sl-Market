@@ -234,15 +234,17 @@ const Header = ({ activeHeading }) => {
               onClick={() => setOpen(true)}
             />
           </div>
-          <div>
-            <Link to="/" className="w-full flex justify-center">
-              <img
-                src="/SL_MARKET.png"
-                alt=""
-                className="mt-3 cursor-pointer w-[150px] sm:w-[100px] xs:w-[80px] fixed top-0 left-0 z-20"  // Responsive sizes"
-              />
-            </Link>
-          </div>
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <Link href="/">
+            <Image
+              src="/SL_MARKET.png"
+              alt="Shop Logo"
+              width={60}
+              height={60}
+              className="object-contain"
+            />
+          </Link>
+        </div>
 
           <div>
             <div
