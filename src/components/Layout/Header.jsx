@@ -236,9 +236,9 @@ const Header = ({ activeHeading }) => {
           </div>
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <Link href="/">
-            <Image
+            <img
               src="/SL_MARKET.png"
-              alt="Shop Logo"
+              alt="Sl Market"
               width={60}
               height={60}
               className="object-contain"
