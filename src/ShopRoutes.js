@@ -1,6 +1,4 @@
-import ShopHomePage from "./pages/Shop/ShopHomePage";
 
+import ShopHomePage from "../src/pages/Shop/ShopHomePage";
 
-export {
-    ShopHomePage,
-};
+export { ShopHomePage };

@@ -24,7 +24,7 @@ export const getAllOrdersOfUser = (userId) => async (dispatch) => {
   }
 };
 
-// get all orders of seller
+// Get all orders of seller
 export const getAllOrdersOfShop = (shopId) => async (dispatch) => {
   try {
     dispatch({

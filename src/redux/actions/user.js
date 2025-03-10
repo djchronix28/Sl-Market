@@ -43,7 +43,7 @@ export const loadSeller = () => async (dispatch) => {
   }
 };
 
-// user update information
+// User update information
 export const updateUserInformation =
   (name, email, phoneNumber, password) => async (dispatch) => {
     try {
@@ -54,19 +54,15 @@ export const updateUserInformation =
       const { data } = await axios.put(
         `${server}/user/update-user-info`,
         {
-          email,
-          password,
-          phoneNumber,
           name,
+          email,
+          phoneNumber,
+          password,
         },
         {
           withCredentials: true,
-          headers: {
-            "Access-Control-Allow-Credentials": true,
-          },
         }
       );
-
       dispatch({
         type: "updateUserInfoSuccess",
         payload: data.user,
@@ -131,7 +127,7 @@ export const deleteUserAddress = (id) => async (dispatch) => {
     dispatch({
       type: "deleteUserAddressSuccess",
       payload: {
-        successMessage: "User deleted successfully!",
+        successMessage: "Address deleted successfully!",
         user: data.user,
       },
     });
@@ -165,3 +161,11 @@ export const getAllUsers = () => async (dispatch) => {
     });
   }
 };
+
+// what is action in redux ?
+// Trigger an event , and call reducer
+// action is a plain object that contains information about an event that has occurred
+// action is the only way to change the state in redux
+// action is the only way to send data from the application to the store
+
+// dispatch :- active action , (action trigger)

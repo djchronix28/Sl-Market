@@ -4,13 +4,13 @@ import Footer from '../../components/Layout/Footer'
 import OrderDetails from "../../components/Shop/OrderDetails";
 
 const ShopOrderDetails = () => {
-  return (
-    <div>
-         <DashboardHeader />
-         <OrderDetails />
-          <Footer />
-    </div>
-  )
+    return (
+        <div>
+            <DashboardHeader />
+            <OrderDetails />
+            <Footer />
+        </div>
+    )
 }
 
 export default ShopOrderDetails

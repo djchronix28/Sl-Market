@@ -1,23 +1,9 @@
-# Node.js
+# Ignore node_modules and environment files
 node_modules/
-npm-debug.log
-yarn-error.log
+.env
+.DS_Store
 
-# Build directories
+# Ignore build and log files
 dist/
 build/
-
-# Vercel deployment
-.vercel/
-
-# Environment files
-.env
-.env.local
-.env.*.local
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Logs
 *.log

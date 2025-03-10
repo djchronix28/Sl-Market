@@ -7,8 +7,9 @@ const initialState = {
 export const orderReducer = createReducer(initialState, {
   // get all orders of user
   getAllOrdersUserRequest: (state) => {
-    state.isLoading = true;
+    state.isLoading = false;
   },
+
   getAllOrdersUserSuccess: (state, action) => {
     state.isLoading = false;
     state.orders = action.payload;
@@ -17,7 +18,6 @@ export const orderReducer = createReducer(initialState, {
     state.isLoading = false;
     state.error = action.payload;
   },
-  
   // get all orders of shop
   getAllOrdersShopRequest: (state) => {
     state.isLoading = true;
@@ -30,7 +30,6 @@ export const orderReducer = createReducer(initialState, {
     state.isLoading = false;
     state.error = action.payload;
   },
-
   // get all orders for admin
   adminAllOrdersRequest: (state) => {
     state.adminOrderLoading = true;
@@ -43,7 +42,6 @@ export const orderReducer = createReducer(initialState, {
     state.adminOrderLoading = false;
     state.error = action.payload;
   },
-
   clearErrors: (state) => {
     state.error = null;
   },

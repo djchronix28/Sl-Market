@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
-import { categoriesData, productData } from "../../static/data";
+import { productData, categoriesData } from "../../static/data";
 import {
   AiOutlineHeart,
   AiOutlineSearch,
@@ -13,15 +13,16 @@ import { CgProfile } from "react-icons/cg";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
+import { backend_url } from "../../server";
 import Cart from "../cart/Cart";
 import Wishlist from "../Wishlist/Wishlist";
 import { RxCross1 } from "react-icons/rx";
 
 const Header = ({ activeHeading }) => {
-  const { isAuthenticated, user } = useSelector((state) => state.user);
   const { isSeller } = useSelector((state) => state.seller);
-  const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
@@ -29,12 +30,14 @@ const Header = ({ activeHeading }) => {
   const [dropDown, setDropDown] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // mobile menu
 
+  // Handle search change
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
 
+    // Filter products
     const filteredProducts =
       allProducts &&
       allProducts.filter((product) =>
@@ -54,20 +57,23 @@ const Header = ({ activeHeading }) => {
   return (
     <>
       <div className={`${styles.section}`}>
-        <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
+        <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between ">
           <div>
             <Link to="/">
               <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
+                src="/SL_MARKET.png"
                 alt=""
+                width="150px"
+                height="150px"
+                objectFit="contain"
               />
             </Link>
           </div>
-          {/* search box */}
+          {/*Search box  */}
           <div className="w-[50%] relative">
             <input
               type="text"
-              placeholder="Search Product..."
+              placeholder="Search for product..."
               value={searchTerm}
               onChange={handleSearchChange}
               className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
@@ -76,27 +82,34 @@ const Header = ({ activeHeading }) => {
               size={30}
               className="absolute right-2 top-1.5 cursor-pointer"
             />
-            {searchData && searchData.length !== 0 ? (
-              <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
-                {searchData &&
-                  searchData.map((i, index) => {
-                    return (
-                      <Link to={`/product/${i._id}`}>
-                        <div className="w-full flex items-start-py-3">
-                          <img
-                            src={`${i.images[0]?.url}`}
-                            alt=""
-                            className="w-[40px] h-[40px] mr-[10px]"
-                          />
-                          <h1>{i.name}</h1>
-                        </div>
-                      </Link>
-                    );
-                  })}
-              </div>
-            ) : null}
-          </div>
+            {
+              // Search data if length is not 0 then show
+              searchData && searchData.length !== 0 ? (
+                <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
+                  {searchData &&
+                    searchData.map((i, index) => {
+                      const d = i.name;
 
+                      return (
+                        <Link to={`/product/${i._id}`}>
+                          <div className="w-full flex items-start-py-3">
+                            <img
+                              src={`${backend_url}${i.images[0]}`}
+                              alt="img"
+                              className="w-[40px] h-[40px] mr-[10px]"
+                            />
+                            <h1>{i.name}</h1>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                </div>
+              ) : null
+            }
+          </div>
+          {/* Search end */}
+
+          {/* Become a Seller */}
           <div className={`${styles.button}`}>
             <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
               <h1 className="text-[#fff] flex items-center">
@@ -105,17 +118,20 @@ const Header = ({ activeHeading }) => {
               </h1>
             </Link>
           </div>
+          {/* Become a Seller end */}
         </div>
       </div>
+
+      {/*  2nd part of header start */}
       <div
         className={`${
-          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+          active == true ? "shadow-sm fixed top-0 left-0 z-10" : null
         } transition hidden 800px:flex items-center justify-between w-full bg-[#3321c8] h-[70px]`}
       >
         <div
           className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
         >
-          {/* categories */}
+          {/* Catagories */}
           <div onClick={() => setDropDown(!dropDown)}>
             <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
               <BiMenuAltLeft size={30} className="absolute top-3 left-2" />
@@ -137,7 +153,8 @@ const Header = ({ activeHeading }) => {
               ) : null}
             </div>
           </div>
-          {/* navitems */}
+
+          {/* NavItems */}
           <div className={`${styles.noramlFlex}`}>
             <Navbar active={activeHeading} />
           </div>
@@ -170,12 +187,13 @@ const Header = ({ activeHeading }) => {
               </div>
             </div>
 
+            {/* avatar */}
             <div className={`${styles.noramlFlex}`}>
               <div className="relative cursor-pointer mr-[15px]">
                 {isAuthenticated ? (
                   <Link to="/profile">
                     <img
-                      src={`${user?.avatar?.url}`}
+                      src={`${backend_url}${user.avatar}`}
                       className="w-[35px] h-[35px] rounded-full"
                       alt=""
                     />
@@ -187,24 +205,26 @@ const Header = ({ activeHeading }) => {
                 )}
               </div>
             </div>
-
-            {/* cart popup */}
+            {/* Avatar end */}
+            {/* card  popup start */}
             {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
+            {/* card popup end */}
 
-            {/* wishlist popup */}
+            {/* Wish list pop uo Start */}
             {openWishlist ? (
               <Wishlist setOpenWishlist={setOpenWishlist} />
             ) : null}
+            {/* Wish list pop uo end */}
           </div>
         </div>
       </div>
 
-      {/* mobile header */}
+      {/* Mobile Header */}
       <div
         className={`${
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
         }
-      w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden`}
+            w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden`}
       >
         <div className="w-full flex items-center justify-between">
           <div>
@@ -214,15 +234,18 @@ const Header = ({ activeHeading }) => {
               onClick={() => setOpen(true)}
             />
           </div>
-          <div>
-            <Link to="/">
-              <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                alt=""
-                className="mt-3 cursor-pointer"
-              />
-            </Link>
-          </div>
+          <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <Link href="/">
+            <img
+              src="/SL_MARKET.png"
+              alt="Sl Market"
+              width={60}
+              height={60}
+              className="object-contain"
+            />
+          </Link>
+        </div>
+
           <div>
             <div
               className="relative mr-[20px]"
@@ -240,107 +263,106 @@ const Header = ({ activeHeading }) => {
           {/* wishlist popup */}
           {openWishlist ? <Wishlist setOpenWishlist={setOpenWishlist} /> : null}
         </div>
+      </div>
 
-        {/* header sidebar */}
-        {open && (
-          <div
-            className={`fixed w-full bg-[#0000005f] z-20 h-full top-0 left-0`}
-          >
-            <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
-              <div className="w-full justify-between flex pr-3">
-                <div>
-                  <div
-                    className="relative mr-[15px]"
-                    onClick={() => setOpenWishlist(true) || setOpen(false)}
-                  >
-                    <AiOutlineHeart size={30} className="mt-5 ml-3" />
-                    <span class="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                      {wishlist && wishlist.length}
-                    </span>
-                  </div>
+      {/*  side bar*/}
+      {open ? (
+        <div className={`fixed w-full bg-[#0000005f] z-20 h-full top-0 left-0`}>
+          <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
+            <div className="w-full justify-between flex pr-3">
+              <div>
+                <div
+                  className="relative mr-[15px]"
+                  onClick={() => setOpenWishlist(true) || setOpen(false)}
+                >
+                  <AiOutlineHeart size={30} className="mt-5 ml-3" />
+                  <span class="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
+                    {wishlist && wishlist.length}
+                  </span>
                 </div>
-                <RxCross1
-                  size={30}
-                  className="ml-4 mt-5"
-                  onClick={() => setOpen(false)}
-                />
               </div>
 
-              <div className="my-8 w-[92%] m-auto h-[40px relative]">
-                <input
-                  type="search"
-                  placeholder="Search Product..."
-                  className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-                {searchData && (
-                  <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
-                    {searchData.map((i) => {
-                      const d = i.name;
+              <RxCross1
+                size={30}
+                className="ml-4 mt-5 cursor-pointer"
+                onClick={() => setOpen(false)}
+              />
+            </div>
 
-                      const Product_name = d.replace(/\s+/g, "-");
-                      return (
-                        <Link to={`/product/${Product_name}`}>
-                          <div className="flex items-center">
-                            <img
-                              src={i.image_Url[0]?.url}
-                              alt=""
-                              className="w-[50px] mr-2"
-                            />
-                            <h5>{i.name}</h5>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+            {/* Search Bar */}
+            <div className="my-8 w-[92%] m-auto h-[40px relative]">
+              <input
+                type="search"
+                placeholder="Search for products"
+                className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
 
-              <Navbar active={activeHeading} />
-              <div className={`${styles.button} ml-4 !rounded-[4px]`}>
-                <Link to="/shop-create">
-                  <h1 className="text-[#fff] flex items-center">
-                    Become Seller <IoIosArrowForward className="ml-1" />
-                  </h1>
-                </Link>
-              </div>
-              <br />
-              <br />
-              <br />
+              {searchData && (
+                <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
+                  {searchData.map((i) => {
+                    const d = i.name;
 
-              <div className="flex w-full justify-center">
-                {isAuthenticated ? (
-                  <div>
-                    <Link to="/profile">
-                      <img
-                        src={`${user.avatar?.url}`}
-                        alt=""
-                        className="w-[60px] h-[60px] rounded-full border-[3px] border-[#0eae88]"
-                      />
-                    </Link>
-                  </div>
-                ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      className="text-[18px] pr-[10px] text-[#000000b7]"
-                    >
-                      Login /
-                    </Link>
-                    <Link
-                      to="/sign-up"
-                      className="text-[18px] text-[#000000b7]"
-                    >
-                      Sign up
-                    </Link>
-                  </>
-                )}
-              </div>
+                    const Product_name = d.replace(/\s+/g, "-");
+                    return (
+                      <Link to={`/product/${Product_name}`}>
+                        <div className="flex items-center">
+                          <img
+                            src={i.image_Url[0].url}
+                            alt=""
+                            className="w-[50px] mr-2"
+                          />
+                          <h5>{i.name}</h5>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+            <Navbar active={activeHeading} />
+            <div className={`${styles.button} ml-4 !rounded-[4px]`}>
+              <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
+                <h1 className="text-[#fff] flex items-center">
+                  {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
+                  <IoIosArrowForward className="ml-1" />
+                </h1>
+              </Link>
+            </div>
+            <br />
+            <br />
+            <br />
+
+            {/* Mob Login */}
+            <div className="flex w-full justify-center">
+              {isAuthenticated ? (
+                <div>
+                  <Link to="/profile">
+                    <img
+                      src={`${backend_url}${user.avatar}`}
+                      alt="Profile img"
+                      className="w-[60px] h-[60px] rounded-full border-[3px] border-[#0eae88]"
+                    />
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="text-[18px] pr-[10px] text-[#000000b7]"
+                  >
+                    Login{" "}
+                  </Link>
+                  <Link to="/sign-up" className="text-[18px] text-[#000000b7]">
+                    Sign up{" "}
+                  </Link>
+                </>
+              )}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      ) : null}
     </>
   );
 };

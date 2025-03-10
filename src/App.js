@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
+import Store from "./redux/store";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   LoginPage,
@@ -21,7 +22,7 @@ import {
   OrderDetailsPage,
   TrackOrderPage,
   UserInbox,
-} from "./routes/Routes.js";
+} from "./routes/Routes";
 import {
   ShopDashboardPage,
   ShopCreateProduct,
@@ -37,6 +38,7 @@ import {
   ShopWithDrawMoneyPage,
   ShopInboxPage,
 } from "./routes/ShopRoutes";
+
 import {
   AdminDashboardPage,
   AdminDashboardUsers,
@@ -44,16 +46,17 @@ import {
   AdminDashboardOrders,
   AdminDashboardProducts,
   AdminDashboardEvents,
-  AdminDashboardWithdraw
+  AdminDashboardWithdraw,
 } from "./routes/AdminRoutes";
-import { ToastContainer } from "react-toastify";
+
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Store from "./redux/store";
+import { useEffect } from "react";
 import { loadSeller, loadUser } from "./redux/actions/user";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
-import { ShopHomePage } from "./ShopRoutes.js";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
+import { ShopHomePage } from "./ShopRoutes";
 import { getAllProducts } from "./redux/actions/product";
 import { getAllEvents } from "./redux/actions/event";
 import axios from "axios";
@@ -68,6 +71,7 @@ const App = () => {
     const { data } = await axios.get(`${server}/payment/stripeapikey`);
     setStripeApiKey(data.stripeApikey);
   }
+
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
@@ -92,6 +96,7 @@ const App = () => {
           </Routes>
         </Elements>
       )}
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -117,6 +122,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route path="/order/success" element={<OrderSuccessPage />} />
         <Route
           path="/profile"
@@ -126,6 +132,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/inbox"
           element={
@@ -134,6 +141,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/user/order/:id"
           element={
@@ -142,6 +150,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/user/track/order/:id"
           element={
@@ -150,6 +159,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
         {/* shop Routes */}
         <Route path="/shop-create" element={<ShopCreatePage />} />
@@ -162,6 +172,7 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
         <Route
           path="/settings"
           element={
@@ -170,6 +181,7 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
         <Route
           path="/dashboard"
           element={
@@ -186,6 +198,7 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
         <Route
           path="/dashboard-orders"
           element={
@@ -194,6 +207,7 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
         <Route
           path="/dashboard-refunds"
           element={
@@ -211,6 +225,7 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
         <Route
           path="/dashboard-products"
           element={
@@ -219,6 +234,25 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
+        <Route
+          path="/dashboard-withdraw-money"
+          element={
+            <SellerProtectedRoute>
+              <ShopWithDrawMoneyPage />
+            </SellerProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard-messages"
+          element={
+            <SellerProtectedRoute>
+              <ShopInboxPage />
+            </SellerProtectedRoute>
+          }
+        />
+
         <Route
           path="/dashboard-create-event"
           element={
@@ -243,22 +277,7 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
-        <Route
-          path="/dashboard-withdraw-money"
-          element={
-            <SellerProtectedRoute>
-              <ShopWithDrawMoneyPage />
-            </SellerProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard-messages"
-          element={
-            <SellerProtectedRoute>
-              <ShopInboxPage />
-            </SellerProtectedRoute>
-          }
-        />
+
         {/* Admin Routes */}
         <Route
           path="/admin/dashboard"
@@ -292,7 +311,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
-         <Route
+        <Route
           path="/admin-products"
           element={
             <ProtectedAdminRoute>
@@ -300,7 +319,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
-         <Route
+        <Route
           path="/admin-events"
           element={
             <ProtectedAdminRoute>
@@ -308,7 +327,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
-         <Route
+        <Route
           path="/admin-withdraw-request"
           element={
             <ProtectedAdminRoute>
@@ -332,5 +351,4 @@ const App = () => {
     </BrowserRouter>
   );
 };
-
 export default App;

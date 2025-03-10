@@ -7,6 +7,7 @@ const initialState = {
 export const userReducer = createReducer(initialState, {
   LoadUserRequest: (state) => {
     state.loading = true;
+    // state.loading meaning: if loading is true, then the user is not authenticated
   },
   LoadUserSuccess: (state, action) => {
     state.isAuthenticated = true;
@@ -32,7 +33,7 @@ export const userReducer = createReducer(initialState, {
     state.error = action.payload;
   },
 
-  // update user address
+  // Update User address
   updateUserAddressRequest: (state) => {
     state.addressloading = true;
   },
@@ -59,23 +60,22 @@ export const userReducer = createReducer(initialState, {
     state.addressloading = false;
     state.error = action.payload;
   },
-
   // get all users --- admin
   getAllUsersRequest: (state) => {
     state.usersLoading = true;
   },
-  getAllUsersSuccess: (state,action) => {
+  getAllUsersSuccess: (state, action) => {
     state.usersLoading = false;
     state.users = action.payload;
   },
-  getAllUsersFailed: (state,action) => {
+  getAllUsersFailed: (state, action) => {
     state.usersLoading = false;
     state.error = action.payload;
   },
+
   clearErrors: (state) => {
     state.error = null;
   },
-  clearMessages: (state) => {
-    state.successMessage = null;
-  },
 });
+
+// reducer -> logic (state change)
